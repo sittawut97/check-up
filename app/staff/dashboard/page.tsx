@@ -249,7 +249,7 @@ export default function StaffDashboard() {
           </div>
           
           <nav className="space-y-2">
-            <a href="#" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/staff/dashboard" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
               <Calendar className="w-5 h-5 mr-3" />
               จัดการนัดหมาย
             </a>
@@ -257,7 +257,7 @@ export default function StaffDashboard() {
               <FileText className="w-5 h-5 mr-3" />
               ตัด Slot แพทย์
             </Link>
-            <a href="#" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/staff/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
               <User className="w-5 h-5 mr-3" />
               ข้อมูลผู้ใช้
             </a>

@@ -163,11 +163,11 @@ export default function DoctorSlotPage() {
               <Calendar className="w-5 h-5 mr-3" />
               จัดการนัดหมาย
             </Link>
-            <a href="#" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/staff/slot" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
               <FileText className="w-5 h-5 mr-3" />
               ตัด Slot แพทย์
             </a>
-            <a href="#" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/staff/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
               <User className="w-5 h-5 mr-3" />
               ข้อมูลผู้ใช้
             </a>
