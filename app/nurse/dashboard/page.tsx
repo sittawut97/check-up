@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { LuNotebookText } from "react-icons/lu";
 import { AiFillEdit } from "react-icons/ai";
@@ -8,12 +8,8 @@ import { MdDeleteForever } from "react-icons/md";
 import { 
   Search, 
   Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
   Calendar, 
   User, 
-  Phone, 
   Building, 
   FileText,
   LogOut,
@@ -32,6 +28,15 @@ interface AppointmentItem {
   location: string;
 }
 
+type Particle = {
+  id: number;
+  left: number;
+  top: number;
+  delay: number;
+  duration: number;
+  size: number;
+};
+
 interface BookingData {
   id: string;
   phone: string;
@@ -46,7 +51,7 @@ interface BookingData {
   notes?: string;
 }
 
-export default function StaffDashboard() {
+export default function NurseDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -73,20 +78,34 @@ export default function StaffDashboard() {
   }, [showAddModal, showViewModal, showEditModal]);
 
   // Create particles effect
-  const createParticles = () => {
-    const particles = [];
+  const seeded = (seed: number) => {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  };
+
+  const isAnyModalOpen = showAddModal || showViewModal || showEditModal;
+  const particles = useMemo<Particle[]>(() => {
+    if (!isAnyModalOpen) return [];
+
+    const next: Particle[] = [];
     for (let i = 0; i < 50; i++) {
-      particles.push({
+      const r1 = seeded(i * 17 + 1);
+      const r2 = seeded(i * 17 + 2);
+      const r3 = seeded(i * 17 + 3);
+      const r4 = seeded(i * 17 + 4);
+      const r5 = seeded(i * 17 + 5);
+      next.push({
         id: i,
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        delay: Math.random() * 3,
-        duration: Math.random() * 3 + 2,
-        size: Math.random() * 3 + 2
+        left: r1 * 100,
+        top: r2 * 100,
+        delay: r3 * 3,
+        duration: r4 * 3 + 2,
+        size: r5 * 3 + 2
       });
     }
-    return particles;
-  };
+
+    return next;
+  }, [isAnyModalOpen]);
 
   // Toggle card expansion
   const toggleCard = (bookingId: string) => {
@@ -249,15 +268,15 @@ export default function StaffDashboard() {
           </div>
           
           <nav className="space-y-2">
-            <a href="/staff/dashboard" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/nurse/dashboard" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
               <Calendar className="w-5 h-5 mr-3" />
               จัดการนัดหมาย
             </a>
-            <Link href="/staff/slot" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
+            <Link href="/nurse/slot" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
               <FileText className="w-5 h-5 mr-3" />
               ตัด Slot แพทย์
             </Link>
-            <a href="/staff/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/nurse/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
               <User className="w-5 h-5 mr-3" />
               ข้อมูลผู้ใช้
             </a>
@@ -265,7 +284,7 @@ export default function StaffDashboard() {
         </div>
 
         <div className="absolute bottom-0 w-64 p-6 border-t border-[#ffc107]">
-          <Link href="/login/staff" className="flex items-center p-3 rounded-lg hover:bg-red-600 transition">
+          <Link href="/login/nurse" className="flex items-center p-3 rounded-lg hover:bg-red-600 transition">
             <LogOut className="w-5 h-5 mr-3" />
             ออกจากระบบ
           </Link>
@@ -551,7 +570,7 @@ export default function StaffDashboard() {
       {showAddModal && (
         <div className="fixed inset-0 bg-black/80 bg-opacity-80 flex items-center justify-center z-100 p-4">
           {/* Particles Background */}
-          {createParticles().map((particle) => (
+          {particles.map((particle) => (
             <div
               key={particle.id}
               className="particle"
@@ -671,7 +690,7 @@ export default function StaffDashboard() {
       {showViewModal && selectedBooking && (
         <div className="fixed inset-0 bg-black/80 bg-opacity-80 flex items-center justify-center z-100 p-4">
           {/* Particles Background */}
-          {createParticles().map((particle) => (
+          {particles.map((particle) => (
             <div
               key={particle.id}
               className="particle"
@@ -812,7 +831,7 @@ export default function StaffDashboard() {
       {showEditModal && selectedBooking && (
         <div className="fixed inset-0 bg-black/80 bg-opacity-80 flex items-center justify-center z-100 p-4">
           {/* Particles Background */}
-          {createParticles().map((particle) => (
+          {particles.map((particle) => (
             <div
               key={particle.id}
               className="particle"

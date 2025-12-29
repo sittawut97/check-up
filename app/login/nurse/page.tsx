@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Lock, Loader2, ChevronRight } from 'lucide-react';
 
-export default function StaffLogin() {
+export default function NurseLogin() {
   const [isLoading, setIsLoading] = useState(false);
 
   const AZ_CONFIG = {
@@ -58,7 +58,7 @@ export default function StaffLogin() {
               </svg>
             </div>
             <h1 className="text-3xl font-extrabold text-white tracking-tight mb-2">
-              Staff Portal
+              nurse Portal
             </h1>
             <div className="h-1 w-12 bg-blue-500 mx-auto rounded-full mb-4"></div>
             <p className="text-slate-400 text-sm leading-relaxed px-4">

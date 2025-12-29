@@ -119,11 +119,12 @@ export default function App() {
     }, 600);
   };
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (

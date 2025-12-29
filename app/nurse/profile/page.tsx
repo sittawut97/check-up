@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
-  ArrowLeft,
   Calendar,
   FileText,
   Building,
@@ -21,8 +20,8 @@ type StatusMessage = {
   text: string;
 };
 
-type StaffProfile = {
-  staffId: string;
+type nurseProfile = {
+  nurseId: string;
   fullName: string;
   email: string;
   phone: string;
@@ -30,40 +29,41 @@ type StaffProfile = {
   role: string;
 };
 
-const STORAGE_KEY = 'staff_profile_mock_v1';
+const STORAGE_KEY = 'nurse_profile_mock_v1';
 
-const defaultProfile: StaffProfile = {
-  staffId: '70009999',
+const defaultProfile: nurseProfile = {
+  nurseId: '70009999',
   fullName: 'แสนดี มีที่ไหน',
   email: 'saendee.m@hospital.local',
   phone: '024191983',
   department: 'ฝ่ายการตลาด',
-  role: 'Staff'
+  role: 'nurse'
 };
 
 const normalizePhone = (value: string) => value.replace(/\D/g, '');
 
-const loadProfileFromStorage = (): StaffProfile => {
+const loadProfileFromStorage = (): nurseProfile => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return defaultProfile;
-    const parsed = JSON.parse(raw) as Partial<StaffProfile>;
+    const parsed = JSON.parse(raw) as Partial<nurseProfile>;
     return { ...defaultProfile, ...parsed };
   } catch {
     return defaultProfile;
   }
 };
 
-export default function StaffProfilePage() {
+export default function NurseProfilePage() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [statusMessage, setStatusMessage] = useState<StatusMessage | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const [profile, setProfile] = useState<StaffProfile>(loadProfileFromStorage);
-  const [draft, setDraft] = useState<StaffProfile>(loadProfileFromStorage);
+  const [profile, setProfile] = useState<nurseProfile>(loadProfileFromStorage);
+
+  const [draft, setDraft] = useState<nurseProfile>(loadProfileFromStorage);
 
   const canSave = useMemo(() => {
-    if (!draft.staffId.trim()) return false;
+    if (!draft.nurseId.trim()) return false;
     if (!draft.fullName.trim()) return false;
     if (!draft.email.trim()) return false;
     if (!draft.department.trim()) return false;
@@ -89,7 +89,7 @@ export default function StaffProfilePage() {
       return;
     }
 
-    const next: StaffProfile = {
+    const next: nurseProfile = {
       ...draft,
       phone: normalizePhone(draft.phone)
     };
@@ -129,15 +129,15 @@ export default function StaffProfilePage() {
           </div>
           
           <nav className="space-y-2">
-            <a href="/staff/dashboard" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/nurse/dashboard" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
               <Calendar className="w-5 h-5 mr-3" />
               จัดการนัดหมาย
             </a>
-            <Link href="/staff/slot" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
+            <Link href="/nurse/slot" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
               <FileText className="w-5 h-5 mr-3" />
               ตัด Slot แพทย์
             </Link>
-            <a href="/staff/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/nurse/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
               <User className="w-5 h-5 mr-3" />
               ข้อมูลผู้ใช้
             </a>
@@ -145,7 +145,7 @@ export default function StaffProfilePage() {
         </div>
 
         <div className="absolute bottom-0 w-64 p-6 border-t border-[#ffc107]">
-          <Link href="/login/staff" className="flex items-center p-3 rounded-lg hover:bg-red-600 transition">
+          <Link href="/login/nurse" className="flex items-center p-3 rounded-lg hover:bg-red-600 transition">
             <LogOut className="w-5 h-5 mr-3" />
             ออกจากระบบ
           </Link>
@@ -162,7 +162,7 @@ export default function StaffProfilePage() {
               <h1 className="text-2xl font-bold text-gray-800">ข้อมูลผู้ใช้</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">{profile.staffId} : {profile.fullName}</span>
+              <span className="text-sm text-gray-600">{profile.nurseId} : {profile.fullName}</span>
             </div>
           </div>
         </header>
@@ -190,7 +190,7 @@ export default function StaffProfilePage() {
                 <div>
                   <p className="text-xs text-gray-500">โปรไฟล์เจ้าหน้าที่</p>
                   <p className="text-lg font-bold text-gray-900">{profile.fullName}</p>
-                  <p className="text-sm text-gray-600">ID: {profile.staffId}</p>
+                  <p className="text-sm text-gray-600">ID: {profile.nurseId}</p>
                 </div>
               </div>
 
@@ -244,8 +244,8 @@ export default function StaffProfilePage() {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">รหัสพนักงาน</label>
                   <input
-                    name="staffId"
-                    value={data.staffId}
+                    name="nurseId"
+                    value={data.nurseId}
                     onChange={handleChange}
                     disabled={!isEditing}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#002D56] focus:border-transparent outline-none text-gray-800 disabled:bg-gray-100"

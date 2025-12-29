@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, User, FileText, LogOut, Menu, X } from 'lucide-react';
+import { Calendar, User, FileText, LogOut, Menu } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
-import { Button } from '@/components/ui/button';
 
 interface DoctorTimeSlots {
   [key: string]: string[];
@@ -61,21 +60,6 @@ export default function DoctorSlotPage() {
     'พญ. มนต์สวรรค์': ['10:00 - 10:15', '10:15 - 10:30'],
     'นพ. ธนัญชัย ธนสัมฤทธิ์': ['10:00 - 10:30', '10:30 - 11:00', '11:00 - 11:30', '11:30 - 12:00']
   };
-
-  // Generate dates (next 21 days from Dec 11, 2025)
-  const generateDates = () => {
-    const dates = [];
-    const startDate = new Date('2025-12-11');
-    for (let i = 0; i < 21; i++) {
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-      const formatted = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-      dates.push(formatted);
-    }
-    return dates;
-  };
-
-  const dates = generateDates();
 
   // Handle add to table
   const handleAddToTable = () => {
@@ -159,15 +143,15 @@ export default function DoctorSlotPage() {
           </div>
           
           <nav className="space-y-2">
-            <Link href="/staff/dashboard" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
+            <Link href="/nurse/dashboard" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
               <Calendar className="w-5 h-5 mr-3" />
               จัดการนัดหมาย
             </Link>
-            <a href="/staff/slot" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/nurse/slot" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
               <FileText className="w-5 h-5 mr-3" />
               ตัด Slot แพทย์
             </a>
-            <a href="/staff/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
+            <a href="/nurse/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
               <User className="w-5 h-5 mr-3" />
               ข้อมูลผู้ใช้
             </a>
@@ -175,7 +159,7 @@ export default function DoctorSlotPage() {
         </div>
 
         <div className="absolute bottom-0 w-64 p-6 border-t border-[#ffc107]">
-          <Link href="/login/staff" className="flex items-center p-3 rounded-lg hover:bg-red-600 transition">
+          <Link href="/login/nurse" className="flex items-center p-3 rounded-lg hover:bg-red-600 transition">
             <LogOut className="w-5 h-5 mr-3" />
             ออกจากระบบ
           </Link>

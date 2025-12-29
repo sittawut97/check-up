@@ -1,14 +1,10 @@
 'use client'
 
 import Link from 'next/link';
-import { User, Briefcase, ChevronRight, LayoutGrid } from 'lucide-react';
+import Image from 'next/image';
+import { User, Briefcase, ChevronRight } from 'lucide-react';
 
 export default function LoginSelection() {
-  // ฟังก์ชันจำลองการคลิก (เนื่องจากในตัวอย่างนี้ไม่มี Next.js Router จริง)
-  const handleNavigation = (path: string) => {
-    console.log(`Navigating to ${path}`);
-  };
-
   return (
     <div className="min-h-screen bg-[#002D56] relative overflow-hidden flex items-center justify-center p-6 font-sans">
       {/* องค์ประกอบตกแต่งพื้นหลัง (Background Orbs) */}
@@ -22,7 +18,13 @@ export default function LoginSelection() {
         {/* ส่วนหัวข้อ (Header Section) */}
         <div className="text-center mb-16 space-y-4">
           <div className="inline-flex items-center justify-center p-3 bg-white backdrop-blur-md rounded-2xl mb-4 border border-white/20 shadow-xl">
-            <img src="https://siph-space.sgp1.digitaloceanspaces.com/uploads/mcnair/2020/04/1587439316_%E0%B9%82%E0%B8%A3%E0%B8%87%E0%B8%9E%E0%B8%A2%E0%B8%B2%E0%B8%9A%E0%B8%B2%E0%B8%A5%E0%B8%A8%E0%B8%B4%E0%B8%A3%E0%B8%B4%E0%B8%A3%E0%B8%B2%E0%B8%8A_%E0%B8%9B%E0%B8%B4%E0%B8%A2%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%B8%E0%B8%93%E0%B8%A2%E0%B9%8C%28SiPH%29_800x600.png" alt="Logo" className="w-auto h-16" />            
+            <Image
+              src="https://siph-space.sgp1.digitaloceanspaces.com/uploads/mcnair/2020/04/1587439316_%E0%B9%82%E0%B8%A3%E0%B8%87%E0%B8%9E%E0%B8%A2%E0%B8%B2%E0%B8%9A%E0%B8%B2%E0%B8%A5%E0%B8%A8%E0%B8%B4%E0%B8%A3%E0%B8%B4%E0%B8%A3%E0%B8%B2%E0%B8%8A_%E0%B8%9B%E0%B8%B4%E0%B8%A2%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%B8%E0%B8%93%E0%B8%A2%E0%B9%8C%28SiPH%29_800x600.png"
+              alt="Logo"
+              width={800}
+              height={600}
+              className="w-auto h-16"
+            />
           </div>
           <h1 className="text-5xl md:text-4xl font-extrabold text-white tracking-tight">
             ระบบนัดหมายตรวจสุขภาพ SiPH<span className="text-blue-400">.</span>
@@ -63,7 +65,7 @@ export default function LoginSelection() {
 
           {/* Card: สำหรับพนักงาน */}
           <Link
-            href="/login/staff"
+            href="/login/nurse"
             className="cursor-pointer group relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-10 text-left transition-all duration-500 hover:bg-white/15 hover:border-white/40 hover:-translate-y-2 shadow-2xl overflow-hidden w-full"
           >
             {/* ตกแต่งภายในการ์ด */}
