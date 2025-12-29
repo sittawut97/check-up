@@ -1,0 +1,132 @@
+สิ่งที่เจอจากโปรเจคตอนนี้
+- ตอนนี้ยังไม่มี Backend จริง
+    ไม่พบโฟลเดอร์ app/api/* (ยังไม่มี API route)
+    ไม่พบ ORM/DB lib (เช่น Prisma/Drizzle) และไม่พบ .env/DATABASE_URL
+    ข้อมูลทั้งหมดเป็น mock ในหน้า UI (เช่น bookings ใน staff/dashboard และ slot ใน staff/slot)
+** ดังนั้น “เส้น API” และ “ตาราง DB” ต้องออกแบบเพิ่มให้รองรับหน้าที่มีอยู่ครับ **
+
+API ที่ควรมี (อิงจากหน้าจอในโปรเจค)
+1) Auth / Session
+    - POST /api/auth/login
+        ใช้ได้ทั้ง staff/customer (ส่ง role หรือแยก endpoint ก็ได้)
+    - POST /api/auth/logout
+    - GET /api/auth/me
+        เอาไว้เช็ค session/role ก่อนเข้า /staff/*
+** หมายเหตุ: ตอนนี้หน้า login แค่ router.push/alert ยังไม่ยิง API **
+
+2) Master/Reference Data (ข้อมูลตั้งต้นที่ UI ต้องใช้)
+    - GET /api/programs
+        list โปรแกรม/ประเภท (เช่น checkup, eye, cardio)
+    - GET /api/doctors?program=checkup
+        list แพทย์ตามประเภท (หน้า staff/slot และ booking ต้องใช้)
+    - GET /api/locations
+        ห้องตรวจ/สถานที่ (ใน staff dashboard มี location ใน appointment)
+    - GET /api/companies (ถ้าต้องการเลือกบริษัท/ค้นหาบริษัท)
+    - GET /api/users (ถ้าต้องการเลือกผู้ใช้/ค้นหาผู้ใช้)
+
+3) Slot Management (หน้า /staff/slot)
+    - GET /api/slots?program=eye&date=2025-12-15&doctorId=...
+        เอาไว้ดู slot ที่มีอยู่/เช็คชนกัน
+    - POST /api/slots/batch
+        สำหรับปุ่ม “ตัด Slot” (ส่ง slot หลายรายการในครั้งเดียว)
+    - PATCH /api/slots/:id
+        แก้ไข slot (เช่น ปรับเวลา/ปิด slot/ปรับ capacity)
+    - DELETE /api/slots/:id
+        ลบ slot ที่สร้างผิด
+    ถ้ามีเคส “ช่วงเช้า/ช่วงบ่าย (ไม่ระบุแพทย์)” ให้รองรับ doctorId = null หรือสร้าง doctor แบบ “ไม่ระบุแพทย์” ก็ได้
+
+4) Booking / Appointment (หน้า /booking/customer + /staff/dashboard)
+    - GET /api/availability?date=...
+        รวมข้อมูล availability เพื่อให้หน้า booking โหลดง่าย (optional แต่ช่วย UI มาก)
+    - POST /api/bookings
+        ลูกค้ากด “จองนัดหมาย” → สร้าง booking + รายการตรวจ (หลายโปรแกรม)
+    - GET /api/bookings?status=pending&q=สมชาย&page=1
+        staff dashboard ใช้ search/filter/pagination
+    - GET /api/bookings/:id
+        staff กดดูรายละเอียด
+    - PATCH /api/bookings/:id
+        staff แก้ไขข้อมูล/โน้ต/สถานะ
+    - DELETE /api/bookings/:id
+        ยกเลิก/ลบ (แนะนำเป็น “cancel/soft delete” มากกว่าลบทิ้งจริง)
+    Data Tables ที่ควรมี (แนะนำแบบ relational)
+    ด้านล่างคือ “ขั้นต่ำ” ให้รองรับหน้าที่มีอยู่ตอนนี้
+
+A) ผู้ใช้/ผู้ป่วย
+    - users (สำหรับ login)
+        id
+        email
+        password_hash
+        role (staff | customer)
+        display_name
+        created_at, updated_at
+    - patients (ข้อมูลคนไข้/ผู้มาใช้บริการ)
+        id
+        hn (ถ้ามีระบบ HN จริง)
+        phone
+        first_name, last_name
+        birth_date
+        gender
+        company_id (FK, optional)
+        created_at, updated_at
+    - companies (optional)
+        id
+        name
+B) โปรแกรม/แพทย์/สถานที่ (Master)
+    - programs
+        id
+        code (เช่น checkup, eye, cardio)
+        name
+        default_duration_min (ช่วยสร้าง slot)
+        active
+    - doctors
+        id
+        full_name
+        active
+    - doctor_programs (ความสัมพันธ์ doctor ↔ program)
+        doctor_id (FK)
+        program_id (FK)
+    - locations
+        id
+        name
+        program_id (FK, optional)
+        active
+C) Slots (หัวใจของระบบ)
+    - slots
+        id
+        program_id (FK)
+        doctor_id (FK, nullable ได้สำหรับ “ไม่ระบุแพทย์”)
+        date (หรือใช้ start_at เป็น datetime ไปเลย)
+        start_time, end_time (หรือใช้ start_at, end_at)
+        capacity (ถ้า 1 คนต่อ slot ก็เก็บเป็น 1)
+        status (open | blocked | closed)
+        created_by (FK → users.id ของ staff)
+        created_at, updated_at
+    แนะนำให้เก็บเวลาแบบ “เวลาเริ่ม/เวลาจบ” ไม่เก็บเป็น string “09:00 - 09:15” แบบใน UI
+
+D) Booking (หนึ่ง booking มีหลายรายการตรวจ)
+    - bookings
+        id
+        patient_id (FK)
+        visit_date (วันที่มารพ.)
+        status (pending | confirmed | completed | cancelled) ตามที่ UI ใช้อยู่
+        notes
+        created_by (FK → users.id, อาจเป็น customer หรือ staff)
+        created_at, updated_at
+    - booking_items (หรือ appointments)
+        id
+        booking_id (FK)
+        program_id (FK)
+        slot_id (FK → slots.id)
+        doctor_id (FK, snapshot เพื่อโชว์ได้แม้ doctor เปลี่ยน master)
+        location_id (FK)
+        start_time, end_time (snapshot)
+        status (optional ถ้าต้องการแยกสถานะรายโปรแกรม)
+
+
+
+คำถามสั้นๆ เพื่อฟิก schema ให้ตรงงานจริง
+จำนวนคนต่อ slot: 1 คน/slot เสมอไหม หรือมี capacity มากกว่า 1?
+Booking 1 ครั้ง = 1 วันเสมอไหม (หลายโปรแกรมในวันเดียว) หรือมีกรณีข้ามวัน?
+login จะใช้บัญชีจริงไหม (มี staff id/SSO/AD) หรือแค่ mock user ก่อน?
+สถานะงาน
+สรุปให้แล้วว่าโปรเจคปัจจุบันยังไม่มี API/DB และให้ รายการ API + ตาราง DB ที่ควรมี เพื่อรองรับหน้า booking/customer, staff/dashboard, staff/slot ครบตามที่มีใน UI ตอนนี้.
