@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, User as UserIcon, Stethoscope, Heart, Eye, CheckCircle, ChevronDown, ChevronUp, Activity, Syringe } from 'lucide-react';
+import { ArrowLeft, LogOut, Calendar, User as UserIcon, Stethoscope, Heart, Eye, CheckCircle, ChevronDown, ChevronUp, Activity, Syringe } from 'lucide-react';
 
 export default function CustomerBooking() {
   const [formData, setFormData] = useState({
@@ -65,19 +65,18 @@ export default function CustomerBooking() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-8 px-4">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-2 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <Link
-            href="/login/customer"
-            className="flex items-center text-blue-600 hover:text-blue-700 font-medium mb-4"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            กลับ
-          </Link>
+          <div className="absolute top-0 right-40 w-50 p-6">
+            <Link href="/login/staff" className="flex items-center p-3 rounded-lg hover:bg-red-600 hover:text-white transition">
+              <LogOut className="w-5 h-5 mr-3" />
+              ออกจากระบบ
+            </Link>
+          </div>
           
-          <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
+          <div className="bg-white rounded-2xl shadow-xl p-6 mb-6 mt-20">
             <div className="flex items-center mb-4">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
                 <UserIcon className="w-6 h-6 text-blue-600" />
@@ -223,179 +222,6 @@ export default function CustomerBooking() {
                 </select>
               </div>
             </div>
-
-            {/* รายการตรวจเพิ่มเติม */}
-            {/* <div className="border-t pt-4">
-              <p className="text-sm font-medium text-gray-700 mb-3">
-                รายการตรวจเพิ่มเติมนอกเหนือจากโปรแกรม <span className="text-red-600">(ชำระเงินเอง)</span>
-              </p>
-
-              {/* ตรวจสุขภาพทั่วไป */}
-              {/* <div className="mb-4">
-                <button
-                  type="button"
-                  onClick={() => toggleSection('checkup')}
-                  className="w-full bg-linear-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 border border-blue-200 rounded-lg px-4 py-3 flex items-center justify-between transition-all duration-200 shadow-sm hover:shadow-md"
-                >
-                  <span className="flex items-center font-semibold text-gray-800">
-                    <Activity className="w-5 h-5 mr-2 text-blue-600" />
-                    ตรวจสุขภาพทั่วไป
-                  </span>
-                  {showSections.checkup ? 
-                    <ChevronUp className="w-5 h-5 text-blue-600" /> : 
-                    <ChevronDown className="w-5 h-5 text-blue-600" />
-                  }
-                </button>
-                {showSections.checkup && (
-                  <div className="mt-3 ml-2 p-4 bg-white border-l-4 border-blue-400 rounded-r-lg space-y-2 text-gray-700 animate-in slide-in-from-top-2 duration-200">
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoncheckup[]"
-                        value="Stool Exam"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      Stool Exam
-                    </label>
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoncheckup[]"
-                        value="ตรวจฮอร์โมนไทรอยด์ TSH"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      ตรวจฮอร์โมนไทรอยด์ TSH
-                    </label>
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoncheckup[]"
-                        value="ตรวจค่าน้ำตาลสะสม"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      ตรวจค่าน้ำตาลสะสม (HbA1C)
-                    </label>
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoncheckup[]"
-                        value="ตรวจวิตามิน D"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      ตรวจวิตามิน D ในเลือด
-                    </label>
-                  </div>
-                )}
-              </div> */}
-
-              {/* ตรวจศูนย์หัวใจ */}
-              {/* <div className="mb-4">
-                <button
-                  type="button"
-                  onClick={() => toggleSection('cardio')}
-                  className="w-full bg-linear-to-r from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 border border-red-200 rounded-lg px-4 py-3 flex items-center justify-between transition-all duration-200 shadow-sm hover:shadow-md"
-                >
-                  <span className="flex items-center font-semibold text-gray-800">
-                    <Heart className="w-5 h-5 mr-2 text-red-500" />
-                    ตรวจศูนย์หัวใจ
-                  </span>
-                  {showSections.cardio ? 
-                    <ChevronUp className="w-5 h-5 text-red-500" /> : 
-                    <ChevronDown className="w-5 h-5 text-red-500" />
-                  }
-                </button>
-                {showSections.cardio && (
-                  <div className="mt-3 ml-2 p-4 bg-white border-l-4 border-red-400 rounded-r-lg space-y-2 text-gray-700 animate-in slide-in-from-top-2 duration-200">
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoncadio[]"
-                        value="ตรวจสมรรถภาพหัวใจขณะออกกำลังกาย"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      ตรวจสมรรถภาพหัวใจขณะออกกำลังกาย
-                    </label>
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoncadio[]"
-                        value="ตรวจสมรรถภาพหัวใจ Echo"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      ตรวจสมรรถภาพหัวใจ Echo
-                    </label>
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoncadio[]"
-                        value="ตรวจความยืดหยุ่นของหลอดเลือด ABI"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      ตรวจความยืดหยุ่นของหลอดเลือด ABI
-                    </label>
-                  </div>
-                )}
-              </div> */}
-
-              {/* วัคซีน */}
-              {/* <div className="mb-4">
-                <button
-                  type="button"
-                  onClick={() => toggleSection('vaccine')}
-                  className="w-full bg-linear-to-r from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 border border-green-200 rounded-lg px-4 py-3 flex items-center justify-between transition-all duration-200 shadow-sm hover:shadow-md"
-                >
-                  <span className="flex items-center font-semibold text-gray-800">
-                    <Syringe className="w-5 h-5 mr-2 text-green-600" />
-                    วัคซีน
-                  </span>
-                  {showSections.vaccine ? 
-                    <ChevronUp className="w-5 h-5 text-green-600" /> : 
-                    <ChevronDown className="w-5 h-5 text-green-600" />
-                  }
-                </button>
-                {showSections.vaccine && (
-                  <div className="mt-3 ml-2 p-4 bg-white border-l-4 border-green-400 rounded-r-lg space-y-2 text-gray-700 animate-in slide-in-from-top-2 duration-200">
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoninternal[]"
-                        value="วัคซีนไข้หวัดใหญ่"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      วัคซีนไข้หวัดใหญ่
-                    </label>
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoninternal[]"
-                        value="วัคซีนโควิด"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      วัคซีนโควิด
-                    </label>
-                    <label className="flex items-center text-sm">
-                      <input
-                        type="checkbox"
-                        name="addoninternal[]"
-                        value="วัคซีนไข้เลือดออก"
-                        onChange={handleChange}
-                        className="mr-2"
-                      />
-                      วัคซีนไข้เลือดออก
-                    </label>
-                  </div>
-                )}
-              </div>
-            </div> */}
 
             {/* ปุ่มจองนัดหมาย */}
             <button
