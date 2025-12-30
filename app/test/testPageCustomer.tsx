@@ -225,7 +225,7 @@ export default function CustomerBooking() {
           )}
 
           {/* User Info Card */}
-          <div className="bg-gradient-to-r from-[#002D56] to-indigo-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
+          <div className="bg-linear-to-r from-[#002D56] to-indigo-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
             <div className="flex items-center gap-6 mb-6">
               <div className="w-20 h-20 bg-white text-[#002D56] bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur">
                 <User className="w-10 h-10" />
@@ -283,8 +283,8 @@ export default function CustomerBooking() {
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* วันที่ */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-                  <label className="block text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                  <label className="block text-sm font-semibold text-gray-800 mb-4 items-center gap-2">
                     <Calendar className="w-5 h-5 text-[#002D56]" />
                     วันที่ต้องการนัดหมาย
                   </label>
@@ -323,7 +323,7 @@ export default function CustomerBooking() {
                 </div>
 
                 {/* ตรวจตา */}
-                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-100">
+                <div className="bg-linear-to-r from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-100">
                   <button type="button" onClick={() => toggleSection('eye')} className="w-full text-left flex items-center justify-between mb-4">
                     <label className="text-sm font-semibold text-gray-800 flex items-center gap-2 cursor-pointer">
                       <Eye className="w-5 h-5 text-emerald-600" />
@@ -370,7 +370,7 @@ export default function CustomerBooking() {
                 </div>
 
                 {/* คลินิกตรวจสุขภาพ */}
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
+                <div className="bg-linear-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-100">
                   <button type="button" onClick={() => toggleSection('checkup')} className="w-full text-left flex items-center justify-between mb-4">
                     <label className="text-sm font-semibold text-gray-800 flex items-center gap-2 cursor-pointer">
                       <Stethoscope className="w-5 h-5 text-purple-600" />
@@ -416,7 +416,7 @@ export default function CustomerBooking() {
                 </div>
 
                 {/* ตรวจหัวใจ */}
-                <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-xl p-6 border border-red-100">
+                <div className="bg-linear-to-r from-red-50 to-rose-50 rounded-xl p-6 border border-red-100">
                   <button type="button" onClick={() => toggleSection('cardio')} className="w-full text-left flex items-center justify-between mb-4">
                     <label className="text-sm font-semibold text-gray-800 flex items-center gap-2 cursor-pointer">
                       <Heart className="w-5 h-5 text-red-600" />
@@ -462,7 +462,7 @@ export default function CustomerBooking() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-[#002D56] to-indigo-600 text-white py-4 rounded-lg font-bold hover:shadow-2xl transition duration-300 shadow-lg hover:from-[#003d7a] hover:to-indigo-700 flex items-center justify-center gap-2 text-lg cursor-pointer"
+                  className="w-full bg-linear-to-r from-[#002D56] to-indigo-600 text-white py-4 rounded-lg font-bold hover:shadow-2xl transition duration-300 shadow-lg hover:from-[#003d7a] hover:to-indigo-700 flex items-center justify-center gap-2 text-lg cursor-pointer"
                 >
                   <CheckCircle className="w-6 h-6" />
                   จองนัดหมาย
@@ -544,7 +544,7 @@ export default function CustomerBooking() {
 
               {/* Summary Card */}
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                <div className="bg-linear-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-600 mb-1">เสร็จสิ้น</p>
@@ -554,7 +554,7 @@ export default function CustomerBooking() {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl p-6 border border-yellow-200">
+                <div className="bg-linear-to-r from-yellow-50 to-amber-50 rounded-xl p-6 border border-yellow-200">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-600 mb-1">กำลังรอ</p>
@@ -564,7 +564,7 @@ export default function CustomerBooking() {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-600 mb-1">ทั้งหมด</p>
@@ -764,7 +764,7 @@ export default function CustomerBooking() {
                     <button
                       type="button"
                       onClick={handleSaveProfile}
-                      className="w-full bg-gradient-to-r from-[#002D56] to-indigo-600 text-white py-4 rounded-lg font-bold hover:shadow-2xl transition duration-300 shadow-lg hover:from-[#003d7a] hover:to-indigo-700 flex items-center justify-center gap-2 text-lg cursor-pointer"
+                      className="w-full bg-linear-to-r from-[#002D56] to-indigo-600 text-white py-4 rounded-lg font-bold hover:shadow-2xl transition duration-300 shadow-lg hover:from-[#003d7a] hover:to-indigo-700 flex items-center justify-center gap-2 text-lg cursor-pointer"
                     >
                       <Save className="w-6 h-6" />
                       บันทึกข้อมูล

@@ -1,7 +1,579 @@
+// 'use client';
+
+// import { useEffect, useMemo, useState } from 'react';
+// import { LuNotebookText } from 'react-icons/lu';
+// import { AiFillEdit } from 'react-icons/ai';
+// import { MdDeleteForever } from 'react-icons/md';
+// import {
+//   Building,
+//   Calendar,
+//   ChevronDown,
+//   ChevronLeft,
+//   ChevronRight,
+//   ChevronUp,
+//   FileText,
+//   Plus,
+//   Search,
+//   User
+// } from 'lucide-react';
+
+// interface AppointmentItem {
+//   program: string;
+//   doctor: string;
+//   time: string;
+//   location: string;
+// }
+
+// interface BookingData {
+//   id: string;
+//   phone: string;
+//   name: string;
+//   birthday: string;
+//   gender: string;
+//   company: string;
+//   bookdate: string;
+//   date: string;
+//   appointments: AppointmentItem[];
+//   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+//   notes?: string;
+// }
+
+// type Particle = {
+//   id: number;
+//   left: number;
+//   top: number;
+//   delay: number;
+//   duration: number;
+//   size: number;
+// };
+
+// export default function NurseDashboard() {
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [filterStatus, setFilterStatus] = useState('all');
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+//   const itemsPerPage = 10;
+
+//   // Modal states
+//   const [showAddModal, setShowAddModal] = useState(false);
+//   const [showViewModal, setShowViewModal] = useState(false);
+//   const [showEditModal, setShowEditModal] = useState(false);
+//   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
+
+//   // Lock scroll when modal is open
+//   useEffect(() => {
+//     if (showAddModal || showViewModal || showEditModal) {
+//       document.body.style.overflow = 'hidden';
+//     } else {
+//       document.body.style.overflow = 'unset';
+//     }
+//     return () => {
+//       document.body.style.overflow = 'unset';
+//     };
+//   }, [showAddModal, showViewModal, showEditModal]);
+
+//   // Create particles effect
+//   const seeded = (seed: number) => {
+//     const x = Math.sin(seed) * 10000;
+//     return x - Math.floor(x);
+//   };
+
+//   const isAnyModalOpen = showAddModal || showViewModal || showEditModal;
+//   const particles = useMemo<Particle[]>(() => {
+//     if (!isAnyModalOpen) return [];
+
+//     const next: Particle[] = [];
+//     for (let i = 0; i < 50; i++) {
+//       const r1 = seeded(i * 17 + 1);
+//       const r2 = seeded(i * 17 + 2);
+//       const r3 = seeded(i * 17 + 3);
+//       const r4 = seeded(i * 17 + 4);
+//       const r5 = seeded(i * 17 + 5);
+//       next.push({
+//         id: i,
+//         left: r1 * 100,
+//         top: r2 * 100,
+//         delay: r3 * 2,
+//         duration: 2 + r4 * 3,
+//         size: 2 + r5 * 6
+//       });
+//     }
+//     return next;
+//   }, [isAnyModalOpen]);
+
+//   // Toggle card expansion
+//   const toggleCard = (bookingId: string) => {
+//     setExpandedCards((prev) => ({
+//       ...prev,
+//       [bookingId]: !prev[bookingId]
+//     }));
+//   };
+
+//   // Modal handlers
+//   const handleViewDetails = (booking: BookingData) => {
+//     setSelectedBooking(booking);
+//     setShowViewModal(true);
+//   };
+
+//   const handleEdit = (booking: BookingData) => {
+//     setSelectedBooking(booking);
+//     setShowEditModal(true);
+//   };
+
+//   const closeAllModals = () => {
+//     setShowAddModal(false);
+//     setShowViewModal(false);
+//     setShowEditModal(false);
+//     setSelectedBooking(null);
+//   };
+
+//   // ข้อมูลตัวอย่าง - รองรับหลายโปรแกรมและหลายแพทย์
+//   const [bookings, setBookings] = useState<BookingData[]>([
+//     {
+//       id: 'BK001',
+//       phone: '0631784331',
+//       name: 'สมชาย ใจดี',
+//       birthday: '24/12/2540',
+//       gender: 'ชาย',
+//       company: 'บริษัท ABC จำกัด',
+//       bookdate: 'จันทร์',
+//       date: '10/12/2568',
+//       appointments: [
+//         { program: 'ตรวจสุขภาพทั่วไป', doctor: 'นพ.สมชาย วงศ์ใหญ่', time: '09:00', location: 'ห้องตรวจ 1' },
+//         { program: 'ตรวจตา', doctor: 'พญ.สุดา ใสสะอาด', time: '10:30', location: 'ห้องตรวจตา' }
+//       ],
+//       status: 'confirmed',
+//       notes: 'ผู้ป่วยมีประวัติความดันสูง'
+//     },
+//     {
+//       id: 'BK002',
+//       phone: '0812345678',
+//       name: 'สมหญิง รักสุขภาพ',
+//       birthday: '15/03/2535',
+//       gender: 'หญิง',
+//       company: 'บริษัท XYZ จำกัด',
+//       bookdate: 'อังคาร',
+//       date: '11/12/2568',
+//       appointments: [
+//         { program: 'ตรวจสุขภาพผู้บริหาร', doctor: 'นพ.ประยุทธ์ มั่นคง', time: '08:00', location: 'ห้อง VIP 1' },
+//         { program: 'ตรวจหัวใจและหลอดเลือด', doctor: 'นพ.วิชัย หัวใจดี', time: '10:00', location: 'ศูนย์หัวใจ' },
+//         { program: 'ตรวจมะเร็ง', doctor: 'พญ.มาลี ดอกไม้', time: '13:00', location: 'ห้องตรวจ 3' }
+//       ],
+//       status: 'pending'
+//     },
+//     {
+//       id: 'BK003',
+//       phone: '0898765432',
+//       name: 'วิชัย สุขใจ',
+//       birthday: '20/07/2538',
+//       gender: 'ชาย',
+//       company: 'บริษัท DEF จำกัด',
+//       bookdate: 'พุธ',
+//       date: '12/12/2568',
+//       appointments: [
+//         { program: 'ตรวจสุขภาพประจำปี', doctor: 'พญ.สุดา แสงจันทร์', time: '14:00', location: 'ห้องตรวจ 2' }
+//       ],
+//       status: 'completed'
+//     },
+//     {
+//       id: 'BK004',
+//       phone: '0891234567',
+//       name: 'ประภา สวยงาม',
+//       birthday: '10/05/2533',
+//       gender: 'หญิง',
+//       company: 'บริษัท GHI จำกัด',
+//       bookdate: 'พฤหัสบดี',
+//       date: '13/12/2568',
+//       appointments: [
+//         { program: 'ตรวจสุขภาพทั่วไป', doctor: 'นพ.สมชาย วงศ์ใหญ่', time: '09:30', location: 'ห้องตรวจ 1' },
+//         { program: 'ตรวจฟัน', doctor: 'ทพญ.วิไล ยิ้มสวย', time: '11:00', location: 'คลินิกทันตกรรม' }
+//       ],
+//       status: 'confirmed',
+//       notes: 'ขอใบรับรองแพทย์'
+//     },
+//     {
+//       id: 'BK005',
+//       phone: '0823456789',
+//       name: 'ธนา รวยมาก',
+//       birthday: '05/08/2542',
+//       gender: 'ชาย',
+//       company: 'บริษัท JKL จำกัด',
+//       bookdate: 'ศุกร์',
+//       date: '14/12/2568',
+//       appointments: [
+//         { program: 'ตรวจสุขภาพผู้บริหาร', doctor: 'นพ.ประยุทธ์ มั่นคง', time: '08:30', location: 'ห้อง VIP 2' }
+//       ],
+//       status: 'pending'
+//     }
+//   ]);
+
+//   // ฟังก์ชันค้นหา
+//   const filteredBookings = bookings.filter(booking => {
+//     const matchSearch = 
+//       booking.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//       booking.phone.includes(searchTerm) ||
+//       booking.company.toLowerCase().includes(searchTerm.toLowerCase());
+    
+//     const matchStatus = filterStatus === 'all' || booking.status === filterStatus;
+    
+//     return matchSearch && matchStatus;
+//   });
+
+//   // Pagination
+//   const totalPages = Math.ceil(filteredBookings.length / itemsPerPage);
+//   const startIndex = (currentPage - 1) * itemsPerPage;
+//   const endIndex = startIndex + itemsPerPage;
+//   const currentBookings = filteredBookings.slice(startIndex, endIndex);
+
+//   const getStatusColor = (status: string) => {
+//     switch (status) {
+//       case 'pending':
+//         return 'bg-yellow-100 text-yellow-800';
+//       case 'confirmed':
+//         return 'bg-blue-100 text-blue-800';
+//       case 'completed':
+//         return 'bg-green-100 text-green-800';
+//       case 'cancelled':
+//         return 'bg-red-100 text-red-800';
+//       default:
+//         return 'bg-gray-100 text-gray-800';
+//     }
+//   };
+
+//   const getStatusText = (status: string) => {
+//     switch (status) {
+//       case 'pending':
+//         return 'รอยืนยัน';
+//       case 'confirmed':
+//         return 'ยืนยันแล้ว';
+//       case 'completed':
+//         return 'เสร็จสิ้น';
+//       case 'cancelled':
+//         return 'ยกเลิก';
+//       default:
+//         return status;
+//     }
+//   };
+
+//   const handleDelete = (id: string) => {
+//     if (confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?')) {
+//       setBookings(bookings.filter((b) => b.id !== id));
+//       alert('ลบข้อมูลเรียบร้อยแล้ว');
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       {/* Search and Filter Bar */}
+//       <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
+//         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+//           {/* Search */}
+//           <div className="relative">
+//             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+//             <input
+//               type="text"
+//               placeholder="ค้นหาชื่อ, เบอร์โทร, บริษัท..."
+//               value={searchTerm}
+//               onChange={(e) => {
+//                 setCurrentPage(1);
+//                 setSearchTerm(e.target.value);
+//               }}
+//               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002D56] focus:border-transparent outline-none"
+//             />
+//           </div>
+
+//           {/* Filter */}
+//           <div>
+//             <select
+//               value={filterStatus}
+//               onChange={(e) => {
+//                 setCurrentPage(1);
+//                 setFilterStatus(e.target.value);
+//               }}
+//               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#002D56] focus:border-transparent outline-none"
+//             >
+//               <option value="all">ทั้งหมด</option>
+//               <option value="pending">รอยืนยัน</option>
+//               <option value="confirmed">ยืนยันแล้ว</option>
+//               <option value="completed">เสร็จสิ้น</option>
+//               <option value="cancelled">ยกเลิก</option>
+//             </select>
+//           </div>
+
+//           {/* Add Button */}
+//           <div>
+//             <button
+//               type="button"
+//               onClick={() => setShowAddModal(true)}
+//               className="w-full bg-[#002D56] text-white px-4 py-2 rounded-lg hover:bg-[#003d7a] transition flex items-center justify-center"
+//             >
+//               <Plus className="w-5 h-5 mr-2" />
+//               เพิ่มนัดหมาย
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Booking Cards */}
+//       <div className="space-y-6">
+//         {currentBookings.map((booking) => (
+//           <div key={booking.id} className="bg-white rounded-xl shadow-sm border overflow-hidden">
+//             {/* Header */}
+//             <div className="p-6 border-b bg-gray-50">
+//               <div className="flex justify-between items-start">
+//                 <div className="flex items-center space-x-4">
+//                   <div className="w-12 h-12 bg-[#002D56] rounded-lg flex items-center justify-center">
+//                     <User className="w-6 h-6 text-white" />
+//                   </div>
+//                   <div>
+//                     <h3 className="text-xl font-bold text-gray-800">{booking.name}</h3>
+//                     <p className="text-sm text-gray-600">ID: {booking.id} | {booking.phone}</p>
+//                     <p className="text-sm text-gray-600">วันเกิด: {booking.birthday} | เพศ: {booking.gender}</p>
+//                   </div>
+//                 </div>
+//                 <div className="text-right">
+//                   <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(booking.status)}`}>
+//                     {getStatusText(booking.status)}
+//                   </span>
+//                   <p className="text-sm text-gray-600 mt-2">{booking.bookdate} | {booking.date}</p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Body */}
+//             <div className="p-6">
+//               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+//                 <div className="flex items-center space-x-3">
+//                   <Building className="w-5 h-5 text-gray-400" />
+//                   <div>
+//                     <p className="text-sm text-gray-500">บริษัท</p>
+//                     <p className="font-semibold text-gray-800">{booking.company}</p>
+//                   </div>
+//                 </div>
+//                 <div className="flex items-center space-x-3">
+//                   <Calendar className="w-5 h-5 text-gray-400" />
+//                   <div>
+//                     <p className="text-sm text-gray-500">วันนัดหมาย</p>
+//                     <p className="font-semibold text-gray-800">{booking.date}</p>
+//                   </div>
+//                 </div>
+//                 <div className="flex items-center space-x-3">
+//                   <FileText className="w-5 h-5 text-gray-400" />
+//                   <div>
+//                     <p className="text-sm text-gray-500">จำนวนรายการตรวจ</p>
+//                     <p className="font-semibold text-gray-800">{booking.appointments.length} รายการ</p>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Appointments */}
+//               <div className="border rounded-lg overflow-hidden mb-6">
+//                 <div className="bg-gray-50 p-4 flex justify-between items-center">
+//                   <h4 className="font-semibold text-gray-800">รายการตรวจ</h4>
+//                   <button
+//                     type="button"
+//                     onClick={() => toggleCard(booking.id)}
+//                     className="flex items-center text-gray-600 hover:text-gray-800 transition"
+//                   >
+//                     <span className="text-sm mr-2">{expandedCards[booking.id] ? 'ซ่อน' : 'แสดง'}</span>
+//                     {expandedCards[booking.id] ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+//                   </button>
+//                 </div>
+
+//                 {expandedCards[booking.id] && (
+//                   <div className="p-4">
+//                     <div className="space-y-3">
+//                       {booking.appointments.map((appointment, index) => (
+//                         <div key={index} className="bg-white p-4 rounded-lg border">
+//                           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+//                             <div>
+//                               <p className="text-xs text-gray-500 mb-1">โปรแกรม</p>
+//                               <p className="font-semibold text-gray-800">{appointment.program}</p>
+//                             </div>
+//                             <div>
+//                               <p className="text-xs text-gray-500 mb-1">แพทย์</p>
+//                               <p className="font-semibold text-gray-800">{appointment.doctor}</p>
+//                             </div>
+//                             <div>
+//                               <p className="text-xs text-gray-500 mb-1">เวลา</p>
+//                               <p className="font-semibold text-gray-800">{appointment.time}</p>
+//                             </div>
+//                             <div>
+//                               <p className="text-xs text-gray-500 mb-1">สถานที่</p>
+//                               <p className="font-semibold text-gray-800">{appointment.location}</p>
+//                             </div>
+//                           </div>
+//                         </div>
+//                       ))}
+//                     </div>
+//                   </div>
+//                 )}
+//               </div>
+
+//               {/* Notes */}
+//               {booking.notes && (
+//                 <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+//                   <div className="flex items-start space-x-3">
+//                     <LuNotebookText className="w-5 h-5 text-blue-600 mt-0.5" />
+//                     <div>
+//                       <p className="font-semibold text-blue-800">หมายเหตุ</p>
+//                       <p className="text-blue-700 text-sm mt-1">{booking.notes}</p>
+//                     </div>
+//                   </div>
+//                 </div>
+//               )}
+
+//               {/* Actions */}
+//               <div className="flex justify-end space-x-3">
+//                 <button
+//                   type="button"
+//                   onClick={() => handleViewDetails(booking)}
+//                   className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition flex items-center"
+//                 >
+//                   ดูรายละเอียด
+//                 </button>
+//                 <button
+//                   type="button"
+//                   onClick={() => handleEdit(booking)}
+//                   className="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg hover:bg-yellow-200 transition flex items-center"
+//                 >
+//                   <AiFillEdit className="w-4 h-4 mr-2" />
+//                   แก้ไข
+//                 </button>
+//                 <button
+//                   type="button"
+//                   onClick={() => handleDelete(booking.id)}
+//                   className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition flex items-center"
+//                 >
+//                   <MdDeleteForever className="w-4 h-4 mr-2" />
+//                   ลบ
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Pagination */}
+//       {totalPages > 1 && (
+//         <div className="flex justify-center items-center space-x-2 mt-8">
+//           <button
+//             type="button"
+//             onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+//             disabled={currentPage === 1}
+//             className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+//           >
+//             <ChevronLeft className="w-5 h-5" />
+//           </button>
+
+//           <span className="px-4 py-2 text-sm text-gray-600">
+//             หน้า {currentPage} จาก {totalPages}
+//           </span>
+
+//           <button
+//             type="button"
+//             onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+//             disabled={currentPage === totalPages}
+//             className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+//           >
+//             <ChevronRight className="w-5 h-5" />
+//           </button>
+//         </div>
+//       )}
+
+//       {/* Add Modal */}
+//       {showAddModal && (
+//         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+//           <div className="bg-white rounded-xl p-6 w-full max-w-2xl mx-4 relative">
+//             <h2 className="text-xl font-bold text-gray-800 mb-4">เพิ่มนัดหมาย</h2>
+//             <p className="text-sm text-gray-600">(ตัวอย่าง UI) - ปิด modal เพื่อกลับไปหน้าหลัก</p>
+
+//             <div className="mt-6 flex justify-end">
+//               <button
+//                 type="button"
+//                 onClick={closeAllModals}
+//                 className="bg-[#002D56] text-white px-6 py-2 rounded-lg hover:bg-[#003d7a] transition"
+//               >
+//                 ปิด
+//               </button>
+//             </div>
+
+//             {particles.length > 0 && (
+//               <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
+//                 {particles.map((p) => (
+//                   <span
+//                     key={p.id}
+//                     className="absolute rounded-full bg-blue-300/40 animate-pulse"
+//                     style={{
+//                       left: `${p.left}%`,
+//                       top: `${p.top}%`,
+//                       width: `${p.size}px`,
+//                       height: `${p.size}px`,
+//                       animationDelay: `${p.delay}s`,
+//                       animationDuration: `${p.duration}s`
+//                     }}
+//                   />
+//                 ))}
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       )}
+
+//       {/* View Modal */}
+//       {showViewModal && selectedBooking && (
+//         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+//           <div className="bg-white rounded-xl p-6 w-full max-w-2xl mx-4">
+//             <h2 className="text-xl font-bold text-gray-800 mb-4">รายละเอียดนัดหมาย</h2>
+//             <div className="space-y-2 text-sm text-gray-700">
+//               <div>
+//                 <span className="font-semibold">ชื่อ:</span> {selectedBooking.name}
+//               </div>
+//               <div>
+//                 <span className="font-semibold">เบอร์โทร:</span> {selectedBooking.phone}
+//               </div>
+//               <div>
+//                 <span className="font-semibold">บริษัท:</span> {selectedBooking.company}
+//               </div>
+//             </div>
+//             <div className="mt-6 flex justify-end">
+//               <button
+//                 type="button"
+//                 onClick={closeAllModals}
+//                 className="bg-[#002D56] text-white px-6 py-2 rounded-lg hover:bg-[#003d7a] transition"
+//               >
+//                 ปิด
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Edit Modal */}
+//       {showEditModal && selectedBooking && (
+//         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+//           <div className="bg-white rounded-xl p-6 w-full max-w-2xl mx-4">
+//             <h2 className="text-xl font-bold text-gray-800 mb-4">แก้ไขนัดหมาย</h2>
+//             <p className="text-sm text-gray-600">(ตัวอย่าง UI) - ยังไม่เชื่อม API</p>
+//             <div className="mt-6 flex justify-end">
+//               <button
+//                 type="button"
+//                 onClick={closeAllModals}
+//                 className="bg-[#002D56] text-white px-6 py-2 rounded-lg hover:bg-[#003d7a] transition"
+//               >
+//                 ปิด
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
 import { LuNotebookText } from "react-icons/lu";
 import { AiFillEdit } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
@@ -12,8 +584,6 @@ import {
   User, 
   Building, 
   FileText,
-  LogOut,
-  Menu,
   X,
   ChevronLeft,
   ChevronRight,
@@ -55,7 +625,6 @@ export default function NurseDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [showSidebar, setShowSidebar] = useState(true);
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
   const itemsPerPage = 10;
 
@@ -260,57 +829,8 @@ export default function NurseDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Sidebar - Fixed */}
-      <aside className={`fixed top-0 left-0 h-screen ${showSidebar ? 'w-64' : 'w-0'} bg-[#002D56] text-white transition-all duration-300 overflow-hidden z-50 shadow-2xl`}>
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold">SiPH Nurse</h2>
-          </div>
-          
-          <nav className="space-y-2">
-            <a href="/nurse/dashboard" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
-              <Calendar className="w-5 h-5 mr-3" />
-              จัดการนัดหมาย
-            </a>
-            <Link href="/nurse/slot" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
-              <FileText className="w-5 h-5 mr-3" />
-              ตัด Slot แพทย์
-            </Link>
-            <a href="/nurse/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
-              <User className="w-5 h-5 mr-3" />
-              ข้อมูลผู้ใช้
-            </a>
-          </nav>
-        </div>
-
-        <div className="absolute bottom-0 w-64 p-6 border-t border-[#ffc107]">
-          <Link href="/login/nurse" className="flex items-center p-3 rounded-lg hover:bg-red-600 transition">
-            <LogOut className="w-5 h-5 mr-3" />
-            ออกจากระบบ
-          </Link>
-        </div>
-      </aside>
-
       {/* Main Content - Adjusted for fixed sidebar */}
-      <div className={`flex flex-col min-h-screen transition-all duration-300 ${showSidebar ? 'ml-64' : 'ml-0'}`}>
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b sticky top-0 z-40">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowSidebar(!showSidebar)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition"
-              >
-                <Menu className="w-6 h-6 text-gray-700" />
-              </button>
-              <h1 className="text-2xl font-bold text-gray-800">จัดการนัดหมายตรวจสุขภาพ</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">70009999 : แสนดี มีที่ไหน</span>
-            </div>
-          </div>
-        </header>
-
+      <div className="flex">        
         {/* Content */}
         <main className="flex-1 p-6">
           {/* Search and Filter Bar */}
@@ -965,4 +1485,4 @@ export default function NurseDashboard() {
       )}
     </div>
   );
-}
+};

@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import { Calendar, User, FileText, LogOut, Menu } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 
@@ -11,7 +9,6 @@ interface DoctorTimeSlots {
 }
 
 export default function DoctorSlotPage() {
-  const [showSidebar, setShowSidebar] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('checkup');
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -128,67 +125,8 @@ export default function DoctorSlotPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className={`${showSidebar ? 'w-64' : 'w-0'} bg-[#002D56] text-white transition-all duration-300 overflow-hidden fixed h-full z-50`}>
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold">SiPH Nurse</h2>
-            {/* <button
-              onClick={() => setShowSidebar(false)}
-              className="lg:hidden p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition"
-            >
-              <X className="w-5 h-5" />
-            </button> */}
-          </div>
-          
-          <nav className="space-y-2">
-            <Link href="/nurse/dashboard" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
-              <Calendar className="w-5 h-5 mr-3" />
-              จัดการนัดหมาย
-            </Link>
-            <a href="/nurse/slot" className="flex items-center p-3 bg-[#002D56] rounded-lg hover:bg-[#c99b0f] transition">
-              <FileText className="w-5 h-5 mr-3" />
-              ตัด Slot แพทย์
-            </a>
-            <a href="/nurse/profile" className="flex items-center p-3 rounded-lg hover:bg-[#c99b0f] transition">
-              <User className="w-5 h-5 mr-3" />
-              ข้อมูลผู้ใช้
-            </a>
-          </nav>
-        </div>
-
-        <div className="absolute bottom-0 w-64 p-6 border-t border-[#ffc107]">
-          <Link href="/login/nurse" className="flex items-center p-3 rounded-lg hover:bg-red-600 transition">
-            <LogOut className="w-5 h-5 mr-3" />
-            ออกจากระบบ
-          </Link>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <div className={`flex-1 ${showSidebar ? 'ml-64' : 'ml-0'} transition-all duration-300`}>
-        {/* Header */}
-        <header className="bg-white shadow-md sticky top-0 z-40">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowSidebar(!showSidebar)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition"
-              >
-                <Menu className="w-6 h-6 text-gray-700" />
-              </button>
-              <h1 className="text-2xl font-bold text-gray-800">ตัด Slot แพทย์</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">70009999 : แสนดี มีที่ไหน</span>
-            </div>
-          </div>
-        </header>
-
-        {/* Main Form */}
-        <main className="p-6">
-          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gray-100">
+      <div className="bg-white rounded-2xl shadow-lg p-8 max-w-6xl mx-auto">
             {/* <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Slot แพทย์</h1> */}
 
             {/* Category Select */}
@@ -345,8 +283,6 @@ export default function DoctorSlotPage() {
                 </table>
               </div>
             </div>
-          </div>
-        </main>
       </div>
     </div>
   );
